@@ -1,0 +1,21 @@
+# docker-composeのバージョン、最新は3
+version: '3'
+
+services:
+  jupyterlab:
+      container_name: seisan_4444
+      build:
+        context: .
+        dockerfile: Dockerfile
+      image: jupyterlab
+      # コンテナの/jobyan/work以下をホストの./workにおいてデータ永続化する。
+      volumes:
+         - ".:/home/jovyan/work/"
+      # (ホストポート:コンテナポート)
+      ports:
+        - 4444:8888
+      # パスワード設定などとりあえずめんどくさいのでtokenを空にしてすぐ使えるようにする。
+      # (起動テスト用なので実際にはパスワードなどを設定してください)
+      tty: true
+      stdin_open: true
+      command: jupyter lab --allow-root --ip=0.0.0.0 --no-browser
